@@ -1,0 +1,8 @@
+language: python
+python:
+  - "3.6.5"
+install:
+  - cp contrib/env-sample .env
+  - pip install -q -r requirements.txt
+script:
+  - PYTHONPATH=./app python -m unittest tests
