@@ -4,7 +4,7 @@ import logging
 import tornado.httpserver
 import tornado.ioloop
 import tornado.web
-from settings import settings
+from SETTINGS import SETTINGS
 from urls import url_patterns
 
 
@@ -14,17 +14,17 @@ logger = logging.getLogger('tornadoskeleton')
 class App(tornado.web.Application):
     def __init__(self):
         tornado.web.Application.__init__(
-            self, url_patterns, **settings)
+            self, url_patterns, **SETTINGS)
 
 
 def main():
     app = App()
     http_server = tornado.httpserver.HTTPServer(app)
-    http_server.listen(settings['port'], settings['host'])
+    http_server.listen(SETTINGS['port'], SETTINGS['host'])
 
     try:
         logger.info(
-            'app running at {}:{}'.format(settings['host'], settings['port']))
+            'app running at {}:{}'.format(SETTINGS['host'], SETTINGS['port']))
         tornado.ioloop.IOLoop.instance().start()
     except KeyboardInterrupt:
         sys.stdout.write('\n')

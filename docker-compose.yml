@@ -1,0 +1,14 @@
+version: '3'
+services:
+  postgres:
+    image: "postgres:10-alpine"
+    ports:
+     - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=q1w2e3r4
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=postgres
+  adminer:
+    image: "adminer"
+    ports:
+     - "8001:8001"
