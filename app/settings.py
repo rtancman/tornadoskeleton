@@ -30,3 +30,10 @@ default_dburl = 'sqlite:///'+os.path.join(BASE_DIR, 'db.sqlite3')
 DATABASES = {
     'default': config('DATABASE_URL', default=default_dburl),
 }
+
+CACHE = {
+    'default': {
+        'port': config('REDIS_PORT', default='6379'),
+        'host': config('REDIS_HOST', default='127.0.0.1'),
+    },
+}

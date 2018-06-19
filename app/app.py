@@ -4,7 +4,9 @@ import logging
 import tornado.httpserver
 import tornado.ioloop
 import tornado.web
-from SETTINGS import SETTINGS
+import aioredis
+import asyncio
+from settings import SETTINGS, CACHE
 from urls import url_patterns
 
 
@@ -16,6 +18,14 @@ class App(tornado.web.Application):
         tornado.web.Application.__init__(
             self, url_patterns, **SETTINGS)
 
+    def init_with_loop(self, loop):
+        self.redis = loop.run_until_complete(
+            aioredis.create_redis(
+                (CACHE['default']['host'], CACHE['default']['port']),
+                loop=loop
+            )
+        )
+
 
 def main():
     app = App()
@@ -25,7 +35,9 @@ def main():
     try:
         logger.info(
             'app running at {}:{}'.format(SETTINGS['host'], SETTINGS['port']))
-        tornado.ioloop.IOLoop.instance().start()
+        loop = asyncio.get_event_loop()
+        app.init_with_loop(loop)
+        loop.run_forever()
     except KeyboardInterrupt:
         sys.stdout.write('\n')
         sys.stdout.write('app closed by user interruption')
